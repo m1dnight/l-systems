@@ -44,7 +44,9 @@ print(expanded)
 # Setup turtle start values.
 turtle.speed(0)  # max speed
 turtle.left(90)  # Go up to start.
-turtle.setup(1920, 1080)
+height = 1080
+width = 1080
+turtle.setup(width, height)
 stack = []
 
 
