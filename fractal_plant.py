@@ -1,15 +1,19 @@
-import turtle
-import time
+import turtles
+from PIL import Image
+
+# Note:
+# The angle of the fractal plant should be 25 degrees, but due to a limitation of
+# the turtles library, we can only use multiples of 45 degrees.
 
 # L-System
 # ----------
 #
-# Variables: X | F
-# Constants: + | − | []
-# Axiom    : X
-# Rules    : X -> F+[[X]-X]-F[-FX]+X | F -> FF
-# angle    : 25°
-axiom = "FX"
+# Variables : X | F
+# Constants : [ | ] | + | -
+# Axiom     : X
+# Rules     : X -> F+[[X]-X]-F[-FX]+X | F -> FF
+
+axiom = "X"
 
 
 # ------------------------------------------------------------------------------#
@@ -34,45 +38,28 @@ def expand_n(s, n):
     return s
 
 
-expanded = expand_n(axiom, 3)
-print(expanded)
+expanded = expand_n(axiom, 10)
 
 # ------------------------------------------------------------------------------#
 #                            Printing                                           #
 # ------------------------------------------------------------------------------#
 
 # Setup turtle start values.
-turtle.speed(0)  # max speed
-turtle.left(90)  # Go up to start.
-height = 1080
-width = 1080
-turtle.setup(width, height)
-stack = []
-
-
-def save_position():
-    state = (turtle.heading(), turtle.position())
-    stack.append(state)
-
-
-def restore_position():
-    (angle, position) = stack.pop()
-    turtle.penup()
-    turtle.setposition(position)
-    turtle.pendown()
-    turtle.setheading(angle)
-
+turtles.left(90)  # Go up to start.
+turtles.center()
 
 for c in expanded:
     if c == "F":
-        turtle.forward(7)
+        turtles.forward(7)
     elif c == "-":
-        turtle.left(25)
+        turtles.left(45)
     elif c == "+":
-        turtle.right(25)
+        turtles.right(45)
     elif c == "[":
-        save_position()
+        turtles.save_position()
     elif c == "]":
-        restore_position()
+        turtles.restore_position()
 
-time.sleep(50000)  # Wait before you close all the windows.
+# Write out the image.
+im = Image.fromarray(turtles.canvas)
+im.save("fractal_plant.jpg")

@@ -1,5 +1,5 @@
-import turtle
-import time
+import turtles
+from PIL import Image
 
 # L-System
 # ----------
@@ -33,26 +33,25 @@ def expand_n(s, n):
     return s
 
 
-expanded = expand_n(axiom, 10)
-print(expanded)
+expanded = expand_n(axiom, 20)
 
 # ------------------------------------------------------------------------------#
 #                            Printing                                           #
 # ------------------------------------------------------------------------------#
 
 # Setup turtle start values.
-turtle.speed(0)  # max speed
-turtle.left(90)  # Go up to start.
-height = 1080
-width = 1080
-turtle.setup(width, height)
+turtles.setposition((5000, 5000))
+turtles.left(90)  # Go up to start.
+
 
 for c in expanded:
     if c == "F":
-        turtle.forward(3)
+        turtles.forward(10)
     elif c == "-":
-        turtle.left(90)
+        turtles.left(90)
     elif c == "+":
-        turtle.right(90)
+        turtles.right(90)
 
-time.sleep(50000)  # Wait before you close all the windows.
+# Write out the image.
+im = Image.fromarray(turtles.canvas)
+im.save("dragon_curve.jpg")

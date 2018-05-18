@@ -1,5 +1,5 @@
-import turtle
-import time
+import turtles
+from PIL import Image
 
 # L-System
 # ----------
@@ -7,11 +7,11 @@ import time
 # Variables: 0 | 1
 # Constants: [ | ]
 # Axiom    : 0
-# Rules    : 1 -> 11 | 0 -> 1[0]1
+# Rules    : 1 -> 11 | 0 -> 1[0]0
 axiom = "0"
 
 
-# -------------fractal_tree.py-----------------------------------------------------------------#
+# ------------------------------------------------------------------------------#
 #                            Expansion                                          #
 # ------------------------------------------------------------------------------#
 
@@ -33,45 +33,29 @@ def expand_n(s, n):
     return s
 
 
-expanded = expand_n(axiom, 3)
-print(expanded)
+expanded = expand_n(axiom, 11)
 
 # ------------------------------------------------------------------------------#
 #                            Printing                                           #
 # ------------------------------------------------------------------------------#
 
-# Setup turtle start values.
-turtle.speed(0)  # max speed
-turtle.left(90)  # Go up to start.
-height = 1080
-width = 1080
-turtle.setup(width, height)
-stack = []
 
-
-def save_position():
-    state = (turtle.heading(), turtle.position())
-    stack.append(state)
-
-
-def restore_position():
-    (angle, position) = stack.pop()
-    turtle.penup()
-    turtle.setposition(position)
-    turtle.pendown()
-    turtle.setheading(angle)
-
+# Start at the bottom.
+turtles.bottom()
+turtles.set_angle(90)
 
 for c in expanded:
     if c == "0":
-        turtle.forward(5)
+        turtles.forward(1)
     elif c == "1":
-        turtle.forward(5)
+        turtles.forward(3)
     elif c == "[":
-        save_position()
-        turtle.left(45)
+        turtles.save_position()
+        turtles.left(45)
     elif c == "]":
-        restore_position()
-        turtle.right(45)
+        turtles.restore_position()
+        turtles.right(45)
 
-time.sleep(50000)  # Wait before you close all the windows.
+# Write out the image.
+im = Image.fromarray(turtles.canvas)
+im.save("fractal_tree.jpg")
